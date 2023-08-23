@@ -1,13 +1,15 @@
+import { useNavigate } from 'react-router';
 import styles from './MovieCard.module.css' ;
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 
 const MovieCard = (props)=>{
     const {image , title , id} = props ;
+    const navTo = useNavigate()
 
 
    function cardClickHandler(){
-      console.log(id)
+      navTo(`/info/:${id.replace('https://en.yts-official.com/','')}`)
    }
     return (
         <div className={styles.container} onClick={cardClickHandler}>

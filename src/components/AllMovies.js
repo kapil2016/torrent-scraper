@@ -1,9 +1,11 @@
+import { useSelector } from "react-redux";
 import styles from "./Allmovies.module.css"
 import MovieCard from "./MovieCard";
 
 import { Typography } from "@material-ui/core";
 
-const AllMovies = ({ movies}) => {
+const AllMovies = () => {
+    const {movies} = useSelector(state=>state.movie)
 
     return (
         <>

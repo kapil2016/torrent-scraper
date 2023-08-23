@@ -9,6 +9,8 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import SelectSmall from './SelectType';
+import { setCurrentPage, setSearchTerm } from '../states/reducers/movie-reducer';
+import { useDispatch } from 'react-redux';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,28 +54,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar({setKeyword , setPage , setType}) {
-    const[searcTerm , setSearchTerm] = React.useState('')
-    const inputChangeHandler = (e)=>{
-        setSearchTerm(e.target.value) ; 
-    }
+export default function SearchAppBar() {
+  const dispatch = useDispatch();
+  const [inputValue, setInputValue] = React.useState('')
+  const inputChangeHandler = (e) => {
+    setInputValue(e.target.value);
+  }
 
-    // console.log(searcTerm)
 
-    React.useEffect(()=>{
-        const timer = setTimeout(()=>{
-            setKeyword(searcTerm)
-            setPage(0)
-        },1000)
-        return ()=> clearTimeout(timer)
-    },[searcTerm , setKeyword , setPage])
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(setSearchTerm(inputValue))
+      dispatch(setCurrentPage(1))
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [inputValue ,dispatch])
 
-   
-    
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{background:'black'}}>
+      <AppBar position="static" sx={{ background: 'black' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -92,7 +92,7 @@ export default function SearchAppBar({setKeyword , setPage , setType}) {
           >
             Torrent Search
           </Typography>
-          <SelectSmall setPage={setPage} setKeyword={setKeyword} setType={setType}></SelectSmall>
+          <SelectSmall></SelectSmall>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -100,7 +100,7 @@ export default function SearchAppBar({setKeyword , setPage , setType}) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              value={searcTerm}
+              value={inputValue}
               onChange={inputChangeHandler}
             />
           </Search>
